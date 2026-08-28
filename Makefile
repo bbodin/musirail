@@ -1,3 +1,5 @@
+-include $(dir $(lastword $(MAKEFILE_LIST))).env
+
 GODOT ?= godot
 ADB ?= adb
 PYTHON ?= python3
@@ -10,7 +12,8 @@ PRESET ?= Android
 PACKAGE ?= io.github.bbodin.musirail
 ACTIVITY ?= com.godot.game.GodotAppLauncher
 PRIVATE_SONGS_DIR ?= $(PROJECT_DIR)/songs
-DEVICE_SONGS_DIR ?= /sdcard/Download/Musirail
+APP_SONGS_DIR ?= files/songs
+DEVICE_IMPORT_DIR ?= /sdcard/Download/Musirail
 
 # Set DEVICE to an adb serial when more than one Android target is connected.
 ADB_DEVICE = $(if $(DEVICE),-s $(DEVICE),)
@@ -55,8 +58,10 @@ install-android:
 sync-private-songs:
 	MUSIRAIL_ADB="$(ADB)" \
 	MUSIRAIL_DEVICE="$(DEVICE)" \
+	MUSIRAIL_PACKAGE="$(PACKAGE)" \
 	MUSIRAIL_PRIVATE_SONGS_DIR="$(PRIVATE_SONGS_DIR)" \
-	MUSIRAIL_DEVICE_SONGS_DIR="$(DEVICE_SONGS_DIR)" \
+	MUSIRAIL_APP_SONGS_DIR="$(APP_SONGS_DIR)" \
+	MUSIRAIL_DEVICE_IMPORT_DIR="$(DEVICE_IMPORT_DIR)" \
 		"$(PROJECT_DIR)/tools/push_private_songs.sh"
 
 run-android:

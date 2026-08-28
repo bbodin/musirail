@@ -58,11 +58,16 @@ make export-android-debug GODOT=/path/to/godot
 ```
 
 For local Android development, `make launch` exports and installs the debug
-APK, copies only the ignored `songs/song_*` workspaces to
-`/sdcard/Download/Musirail`, and starts the app. These audio and cover files
-are then available through Android's native file picker without being bundled
-in the APK. Use `DEVICE=<adb-serial>`, `PRIVATE_SONGS_DIR=<host-directory>`, or
-`DEVICE_SONGS_DIR=<android-directory>` to override the defaults.
+APK, copies only the ignored `songs/song_*` workspaces into the app-managed
+`user://songs` library, mirrors them to `/sdcard/Download/Musirail` for the
+Android Track Editor picker, and starts the app. The private-library copy uses
+Android's debug-only `run-as` access, so the files remain outside the APK. A
+workspace appears in PLAY only when it contains the required `metadata.json`,
+version-4 `chart.json`, and audio file; folders containing only raw audio and
+cover art are editor inputs, not playable tracks. Use `DEVICE=<adb-serial>`,
+`PRIVATE_SONGS_DIR=<host-directory>`,
+`APP_SONGS_DIR=<app-data-relative-directory>`, or
+`DEVICE_IMPORT_DIR=<android-directory>` to override the defaults.
 
 The advanced offline chart generator has additional dependencies:
 
